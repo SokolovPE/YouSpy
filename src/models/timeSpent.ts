@@ -5,7 +5,7 @@ class TimeSpent {
     text!: String;
     get spent() {
         return this.duration.minutes;
-    };
+    }
     get groupType() {
         return this.type.name;
     }

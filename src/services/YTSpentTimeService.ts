@@ -27,7 +27,7 @@ export class YTSpentTimeService implements ISpentTimeService {
     
     public async getSpentTimeVM(date: Date, userId: string): Promise<TimeSpentVM[]> {
         // call youtrack api
-        let data = await this.getSpentTime(date, userId);
+        const data = await this.getSpentTime(date, userId);
         return data.map(item => new TimeSpentVM(item.id, item.duration.minutes, item.type.name));
     }
 }

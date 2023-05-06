@@ -35,6 +35,7 @@
 
 <script lang="ts" setup>
 import type { ChartItem, ChartConfiguration, Color } from 'chart.js/auto'
+import { FontSpec } from 'chart.js/auto'
 import { Chart } from 'chart.js/auto'
 import type { TreemapScriptableContext, TreemapControllerDatasetOptions } from 'chartjs-chart-treemap'
 import { TreemapController, TreemapElement } from 'chartjs-chart-treemap'
@@ -63,8 +64,13 @@ const dataset = ref<TreemapControllerDatasetOptions<TimeSpentVM>[]>([
       display: true,
       align: 'left',
       position: 'bottom',
+      font: () : FontSpec => {
+        return {
+          size: 14
+        } as FontSpec;
+      }
     },
-    label: 'My treemap dataset',
+    label: 'Main dataset',
     tree: [],
     key: 'spent',
     groups: ['type'],
@@ -103,7 +109,7 @@ const config: ChartConfiguration = {
     plugins: {
       title: {
         display: true,
-        text: 'Some treemap chart...',
+        text: 'Employee time spent chart',
       },
       legend: {
         display: false,
