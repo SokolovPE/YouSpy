@@ -10,10 +10,16 @@
               color="white"
               item-title="fullName"
               item-value="login"
-              label="userList"
+              label="User"
+              class="pr-2"
+            />
+            <v-text-field 
+              type="date"
+              label="Date"
+              class="pr-2"
+              v-model="selectedDate"
             />
             <v-btn
-              class="mr-2"
               color="primary"
               min-width="228"
               rel="noopener noreferrer"
@@ -126,6 +132,7 @@ const config: ChartConfiguration = {
 const users = ref([] as User[]);
 const selectedUser = ref();
 const timeSpendings = ref([] as TimeSpentVM[]);
+const selectedDate = ref(new Date().toISOString().split('T')[0]);
 let chart : Chart;
 
 async function loadUsers (): Promise<void> {
