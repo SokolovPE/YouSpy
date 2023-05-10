@@ -1,5 +1,6 @@
 class TimeSpent {
     id!: String;
+    date!: number;
     duration!: Duration;
     type!: TimeSpentType;
     text!: String;

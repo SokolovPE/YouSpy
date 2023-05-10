@@ -5,9 +5,9 @@ import User from "@/models/user";
 
 @injectable()
 export class YTUserService implements IUserService {
-    private YTUrl : String = "https://erusharp.youtrack.cloud";
+    private YTUrl : String = "WHOOPS";
     private YTApiUrl : String = `${this.YTUrl}/api`;
-    private YTToken : String = "perm:cm9vdA==.NDctMQ==.5biuBCkKnPobYnzov4A7dmvmXErCjC";
+    private YTToken : String = "WHOOPS";
 
     public getUsers(): Promise<User[]> {
         // call youtrack api

@@ -13,7 +13,7 @@
               label="User"
               class="pr-2"
             />
-            <v-text-field 
+            <v-text-field
               type="date"
               label="Date"
               class="pr-2"
@@ -40,19 +40,20 @@
 </template>
 
 <script lang="ts" setup>
-import type { ChartItem, ChartConfiguration, Color } from 'chart.js/auto'
-import { FontSpec } from 'chart.js/auto'
-import { Chart } from 'chart.js/auto'
-import type { TreemapScriptableContext, TreemapControllerDatasetOptions } from 'chartjs-chart-treemap'
-import { TreemapController, TreemapElement } from 'chartjs-chart-treemap'
-import { ref, onMounted } from 'vue'
-import type { IUserService } from '@/interfaces/IUserService'
-import type { ISpentTimeService } from '@/interfaces/ISpentTimeService'
-import container from '@/config/ioc_config'
-import SERVICE_IDENTIFIER from '@/constants/identifiers'
-import COLORS from '@/constants/colors'
-import type User from '@/models/user'
-import type TimeSpentVM from '@/models/timeSpentVM'
+import type { ChartItem, ChartConfiguration, Color } from 'chart.js/auto';
+import { FontSpec } from 'chart.js/auto';
+import { Chart } from 'chart.js/auto';
+import type { TreemapScriptableContext, TreemapControllerDatasetOptions } from 'chartjs-chart-treemap';
+import { TreemapController, TreemapElement } from 'chartjs-chart-treemap';
+import { ref, onMounted } from 'vue';
+import type { IUserService } from '@/interfaces/IUserService';
+import type { ISpentTimeService } from '@/interfaces/ISpentTimeService';
+import container from '@/config/ioc_config';
+import SERVICE_IDENTIFIER from '@/constants/identifiers';
+import COLORS from '@/constants/colors';
+import WORK_TYPE from '@/constants/workType';
+import type User from '@/models/user';
+import type TimeSpentVM from '@/models/timeSpentVM';
 
 Chart.register(TreemapController, TreemapElement)
 let canvasTag: ChartItem
@@ -88,18 +89,21 @@ const dataset = ref<TreemapControllerDatasetOptions<TimeSpentVM>[]>([
       }
       let color = COLORS.Orange
       switch (ctx.raw.g) {
-        case 'Implementation':
-          color = COLORS.Orange
-          break
-        case 'Testing':
-          color = COLORS.Blue
-          break
-        case 'Investigation':
-          color = COLORS.Green
-          break
+        case WORK_TYPE.Implementation:
+          color = COLORS.Orange;
+          break;
+        case WORK_TYPE.Testing:
+          color = COLORS.Blue;
+          break;
+        case WORK_TYPE.Investigation:
+          color = COLORS.Green;
+          break;
+        case WORK_TYPE.Documentation:
+          color = COLORS.Teal;
+          break;
         default:
-          color = COLORS.Violet
-          break
+          color = COLORS.Violet;
+          break;
       }
       return color
     },
@@ -133,6 +137,7 @@ const users = ref([] as User[]);
 const selectedUser = ref();
 const timeSpendings = ref([] as TimeSpentVM[]);
 const selectedDate = ref(new Date().toISOString().split('T')[0]);
+const boards = ref([] as string[]);
 let chart : Chart;
 
 async function loadUsers (): Promise<void> {
@@ -145,10 +150,19 @@ async function loadUsers (): Promise<void> {
 
 async function loadTimeSpent () {
   const timeService = container.get<ISpentTimeService>(SERVICE_IDENTIFIER.ISpentTimeService);
-  timeSpendings.value = await timeService.getSpentTimeVM(new Date(), selectedUser.value);
+  timeSpendings.value = await timeService.getSpentTimeVM(new Date(selectedDate.value), selectedUser.value);
   dataset.value[0].tree = timeSpendings.value;
   chart.update();
 }
+
+/*function getBoardsFromSpendings() {
+  timeSpendings.value.map(item => item.)
+}*/
+
+/*async function filterTimeSpent (projectId: string)  : Promise<void> {
+  const timeService = container.get<ISpentTimeService>(SERVICE_IDENTIFIER.ISpentTimeService);
+
+}*/
 
 onMounted(async () => {
   canvasTag = document.getElementById("mainChart") as ChartItem;
